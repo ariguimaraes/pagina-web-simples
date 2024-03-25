@@ -22,7 +22,7 @@ function login() {
 }
 
 function getErrorMessage(error) {
-    if (error.code = "auth/user-not-found") {
+    if (error.code === "auth/user-not-found") {
         return "Usuário não encontrado";
     }
     return error.message;
@@ -30,6 +30,17 @@ function getErrorMessage(error) {
 
 function register() {
     window.location.href = "pages/register/register.html";
+}
+
+function recoverPassword() {
+    showLoading();
+    firebase.auth().sendPasswordResetEmail(form.email().value).then(() => {
+        hideLoading();
+        alert("Email enviado com sucesso");
+    }).catch(error => {
+        hideLoading();
+        alert(getErrorMessage(error));
+    });
 }
 
 function isEmailValid() {
@@ -50,7 +61,7 @@ function toggleEmailErrors() {
 function togglePasswordErrors() {
     const password = form.password().value;
 
-    form.passwordRequeridError().style.display = password ? "none" : "block";
+    form.passwordRequiredError().style.display = password ? "none" : "block";
 }
 
 function toggleButtonsDisable() {
